@@ -33,7 +33,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "socialnetwork.apps.SocialnetworkConfig"
+    "socialnetwork.apps.SocialnetworkConfig",
+    'rest_framework',
+    'rest_framework.authtoken'
+    'corsheaders',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth.registration',
 ]
 
 MIDDLEWARE = [

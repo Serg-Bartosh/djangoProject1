@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<div class="scene">
+    <section class="card">
+
+        {% if user.is_authenticated %}
+            <p>You are already logged in.</p>
+
+        {% else %}
+
+            {% if errors %}
+                <div class="alert alert-danger">
+                    {% for error in errors %}
+                        <a>{{ error }}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        {% endif %}
+        <form action="{% url 'registration' %}" method="post">
+            {% csrf_token %}
+            <label> first_name:
+                <input type="text" name="first_name" placeholder="Killer228" required>
+            </label>
+            <br>
+            <label> last_name:
+                <input type="text" name="last_name" placeholder="Mazelow" required>
+            </label>
+            <br>
+            <label> User name:
+                <input type="text" name="username" placeholder="Killer228" required>
+            </label>
+            <br>
+            <label> E-mail:
+                <input type="email" name="email" placeholder="Killer228@gm.cm" required>
+            </label>
+            <br>
+            <label> Password:
+                <input type="password" name="password" placeholder="mDe563i7KZ" required>
+            </label>
+            <button type="submit">Register</button>
+            <br>
+            <a href="{% url 'login' %}">Log in</a>
+        </form>
+    </section>
+</div>
+
+</body>
+
+</html>

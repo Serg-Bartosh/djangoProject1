@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/account/account.css' %}">
+    <title>User Profile</title>
+</head>
+<body>
+
+<div id="mainContainer">
+    <div id="profileContainer">
+        <div class="profile-info">
+            <div class="profile-image">
+                <img src="{% if user_profile.avatar %}{{ user_profile.avatar.url }}{% endif %}"
+                     alt="Profile Image">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.avatar }}
+                    <input type="file" name="avatar">
+                    <button type="submit">Upload Avatar</button>
+                </form>
+            </div>
+            <div class="profile-data">
+                <p>Username: {{ user.username }}</p>
+                <p>First Name: {{ user.first_name }}</p>
+                <p>Last Name: {{ user.last_name }}</p>
+                <p>Email: {{ user.email }}</p>
+                <p>Bio: {{ user_profile.bio }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="media-container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if user_profile_media %}
+                {% for user_profile_image_obj in user_profile_media %}
+                    <img src="{{ user_profile_image_obj.image.url }}" alt="">
+                {% endfor %}
+            {% else %}
+                <p>No images available</p>
+            {% endif %}
+            <input type="file" name="image">
+            <button type="submit">Upload media</button>
+        </form>
+    </div>
+</div>
+
+{% if form.errors %}
+    <div class="error-container">
+        <p>Form errors:</p>
+        <ul>
+            {% for error in message.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+</body>
+</html>

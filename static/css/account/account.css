@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+#mainContainer {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    bottom: 10%;
+    left: 10%;
+    display: flex;
+    background-color: #f0f2f5;
+    overflow: auto; /* Добавлено для возможности прокрутки */
+}
+
+#profileContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #1877f2;
+    color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.profile-info {
+    display: flex;
+}
+
+.profile-image {
+    flex: 1;
+    padding: 20px;
+}
+
+.profile-image img {
+    width: 35%;
+    height: 35%;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.profile-data {
+    flex: 2;
+    padding: 20px;
+}
+
+.profile-data h2, .profile-data p {
+    margin: 0;
+}
+
+.media-container {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.media-container img {
+    max-width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}

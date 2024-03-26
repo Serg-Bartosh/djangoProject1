@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Details</title>
+    <link rel="stylesheet" href="{% static 'css/article.css' %}">
+</head>
+<body>
+<div class="article-container">
+    <h1>{{ article.title }}</h1>
+    <div class="article-meta">
+        <p><strong>Author:</strong> {{ article.author }}</p>
+        <p><strong>Likes:</strong> {{ likes }}</p>
+        <p><strong>Dislikes:</strong> {{ dislikes }}</p>
+        <div class="like-dislike-buttons">
+            <form method="post" action="{% url 'article_like' author=author title=article.title %}">
+                {% csrf_token %}
+                <button type="submit" name="like" value="true">Like</button>
+            </form>
+            <form method="post" action="{% url 'article_like' author=author title=article.title %}">
+                {% csrf_token %}
+                <button type="submit" name="like" value="false">Dislike</button>
+            </form>
+        </div>
+        {% if comments %}
+            <div class="comments-section">
+            <h3>Comments:</h3>
+            {% for comment in comments %}
+            <div class="comment">
+                <a href="{% url 'profile' username=comment.author.username %}"><strong>{{ comment.author.username }}</strong> - {{ comment.created_at }}</a>
+                <p>{{ comment.comment }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p><strong>No comments yet</strong></p>
+        {% endif %}
+        <p><strong>Comments Count:</strong> {{ comments_count }}</p>
+        <p><strong>Created At:</strong> {{ article.created_at }}</p>
+        <p><strong>Updated At:</strong> {{ article.updated_at }}</p>
+        </div>
+        {% if article.image %}
+            <img class="article-image" src="{{ article.image.url }}" alt="Article Image">
+        {% endif %}
+        <div class="article-content">
+            <p>{{ article.content }}</p>
+        </div>
+
+        <div class="comment-form">
+            <h3>Add a Comment</h3>
+            <form method="post" action="{% url 'article_add_comment' author=author title=article.title %}">
+                {% csrf_token %}
+                <input type="hidden" name="comment_article">
+                <label>
+                    <textarea name="comment" rows="4" cols="50"></textarea>
+                </label>
+                <br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

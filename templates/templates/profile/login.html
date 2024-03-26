@@ -6,41 +6,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/account/login.css' %}">
+    <title>Login</title>
 </head>
 
 <body>
-<div class="scene">
-    <section class="card">
-
+<div class="container">
+    <div class="card">
         {% if user.is_authenticated %}
             <p>You are already logged in.</p>
-
         {% else %}
-
             {% if errors %}
                 <div class="alert alert-danger">
                     {% for error in errors %}
-                        <a>{{ error }}</a>
+                        <p>{{ error }}</p>
                     {% endfor %}
                 </div>
             {% endif %}
-
         {% endif %}
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
-            <label> E-mail:
-                <input type="email" name="email" placeholder="Killer228@gm.cm" required>
-            </label>
-            <label> Password:
-                <input type="password" name="password" placeholder="mDe563i7KZ" required>
-            </label>
-            <button type="submit">Register</button>
-            <br>
-            <a href="{% url 'login' %}">Registration</a>
+            <div class="input-field">
+                <label for="email"></label><input type="email" id="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-field">
+                <label for="password"></label><input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
         </form>
-    </section>
+        <p>Don't have an account? <a href="{% url 'registration' %}">Sign Up</a></p>
+    </div>
 </div>
-
 </body>
 
 </html>

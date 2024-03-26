@@ -5,54 +5,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/account/registration.css' %}">
+    <title>Registration</title>
 </head>
 
 <body>
-<div class="scene">
-    <section class="card">
-
-        {% if user.is_authenticated %}
-            <p>You are already logged in.</p>
-
-        {% else %}
-
-            {% if errors %}
-                <div class="alert alert-danger">
-                    {% for error in errors %}
-                        <a>{{ error }}</a>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-        {% endif %}
+<div class="container">
+    <div class="card">
+        <h2 class="title">Sign Up</h2>
         <form action="{% url 'registration' %}" method="post">
             {% csrf_token %}
-            <label> first_name:
-                <input type="text" name="first_name" placeholder="Killer228" required>
-            </label>
-            <br>
-            <label> last_name:
-                <input type="text" name="last_name" placeholder="Mazelow" required>
-            </label>
-            <br>
-            <label> User name:
-                <input type="text" name="username" placeholder="Killer228" required>
-            </label>
-            <br>
-            <label> E-mail:
-                <input type="email" name="email" placeholder="Killer228@gm.cm" required>
-            </label>
-            <br>
-            <label> Password:
-                <input type="password" name="password" placeholder="mDe563i7KZ" required>
-            </label>
-            <button type="submit">Register</button>
-            <br>
-            <a href="{% url 'login' %}">Log in</a>
+            <div class="input-field">
+                <input type="text" id="first_name" name="first_name" required>
+                <label for="first_name">First Name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="last_name" name="last_name" required>
+                <label for="last_name">Last Name</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="username" name="username" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="input-field">
+                <input type="email" id="email" name="email" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+            </div>
+            <button type="submit" class="btn">Sign Up</button>
         </form>
-    </section>
+        <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+    </div>
 </div>
-
 </body>
-
 </html>

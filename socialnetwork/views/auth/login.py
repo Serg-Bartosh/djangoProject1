@@ -3,9 +3,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from socialnetwork.serializers.login import LoginSerializer
+from socialnetwork.serializers.auth.login import LoginSerializer
 
 
 class LoginView(APIView):
@@ -23,5 +24,6 @@ class LoginView(APIView):
                                 password=serializer.validated_data['password'])
             if user is not None:
                 login(request, user)
-            return HttpResponseRedirect(redirect_to='/main/profile')
+                username = user.username
+                return HttpResponseRedirect(reverse('profile', kwargs={'username': username}))
         return Response(status=HTTP_400_BAD_REQUEST)

@@ -4,45 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/account/account.css' %}">
+    <link rel="stylesheet" href="{% static 'css/account/profile.css' %}">
     <title>User Profile</title>
 </head>
 <body>
+
+<a href="{% url 'main' %}">Main</a>
 
 <div id="mainContainer">
     <div id="profileContainer">
         <div class="profile-info">
             <div class="profile-image">
-                <img src="{% if user_profile.avatar %}{{ user_profile.avatar.url }}{% endif %}"
-                     alt="Profile Image">
-                <form action="" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.avatar }}
-                    <input type="file" name="avatar">
-                    <button type="submit">Upload Avatar</button>
-                </form>
+                <img src="{% if avatar.image %}{{ avatar.image.url }}{% endif %}" alt="Profile Image">
+                {% if request.user == user %}
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.image }}
+                        <input type="file" name="image">
+                        <button type="submit">Upload Avatar</button>
+                    </form>
+                {% endif %}
             </div>
+
             <div class="profile-data">
-                <p>Username: {{ user.username }}</p>
-                <p>First Name: {{ user.first_name }}</p>
-                <p>Last Name: {{ user.last_name }}</p>
-                <p>Email: {{ user.email }}</p>
-                <p>Bio: {{ user_profile.bio }}</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Bio:</strong> {{ user_profile.bio }}</p>
             </div>
         </div>
+
+        <h2>User Posts</h2>
+        <ul id="postsList">
+            {% for article_info in articles_info %}
+                <li>
+                    <a class="title" href="{% url 'article_page' author=article_info.author title=article_info.title %}">{{ article_info.title }}</a>
+                    <p>{{ article_info.content }}</p>
+                    {% if article_info.image %}
+                        <img class="post-image" src="{{ article_info.image }}" alt="Post Image">
+                    {% endif %}
+                    <div class="post-meta">
+                        <p><strong>Likes:</strong> {{ article_info.likes }}</p>
+                        <p><strong>Dislikes:</strong> {{ article_info.dislikes }}</p>
+                        <p><strong>Comments:</strong> {{ article_info.comments_count }}</p>
+                        <p><strong>Created at:</strong> {{ article_info.created_at }}</p>
+                        <p><strong>Updated at:</strong> {{ article_info.updated_at }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+        {% if request.user == user %}
+            <button id="addPostBtn">Add Post</button>
+        {% endif %}
     </div>
     <div class="media-container">
-        <form action="" method="post" enctype="multipart/form-data">
+        <h2>Uploaded Media</h2>
+        <form action="{% url 'photo' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% if user_profile_media %}
-                {% for user_profile_image_obj in user_profile_media %}
-                    <img src="{{ user_profile_image_obj.image.url }}" alt="">
+            {% if photos %}
+                {% for photo in photos %}
+                    <img src="{{ photo.image.url }}" alt="Uploaded Image">
                 {% endfor %}
             {% else %}
                 <p>No images available</p>
             {% endif %}
-            <input type="file" name="image">
-            <button type="submit">Upload media</button>
+            {% if request.user == user %}
+                <input type="file" name="image">
+                <button type="submit">Upload Media</button>
+            {% endif %}
         </form>
     </div>
 </div>
@@ -58,5 +90,78 @@
     </div>
 {% endif %}
 
+<!-- Модальное окно для добавления поста -->
+<div id="addPostModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="addPostForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image" required>
+            <label>
+                <input type="text" name="title" placeholder="Title" required>
+            </label>
+            <label>
+                <textarea name="content" placeholder="Post Content" required></textarea>
+            </label>
+            <button type="submit">Add Post</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Получаем элементы
+    var addPostModal = document.getElementById("addPostModal");
+    var addPostBtn = document.getElementById("addPostBtn");
+    var closeBtn = document.getElementsByClassName("close")[0];
+    var addPostForm = document.getElementById("addPostForm");
+
+    // Открываем модальное окно
+    addPostBtn.onclick = function () {
+        addPostModal.style.display = "block";
+    }
+
+    // Закрываем модальное окно при клике на крестик
+    closeBtn.onclick = function () {
+        addPostModal.style.display = "none";
+    }
+
+    // Закрываем модальное окно при клике вне его
+    window.onclick = function (event) {
+        if (event.target == addPostModal) {
+            addPostModal.style.display = "none";
+        }
+    }
+
+    // Обработчик отправки формы
+    addPostForm.addEventListener('submit', function (event) {
+        event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+        var formData = new FormData(addPostForm); // Создаем объект FormData из формы
+
+        fetch("{% url 'article' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}' // Передаем CSRF-токен
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Обрабатываем ответ сервера, если необходимо
+                console.log(data);
+                // Закрываем модальное окно после успешной отправки формы
+                addPostModal.style.display = "none";
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+                // Обрабатываем ошибку, если необходимо
+            });
+    });
+</script>
 </body>
 </html>

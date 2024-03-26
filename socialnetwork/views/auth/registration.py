@@ -3,9 +3,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from socialnetwork.serializers.registration import RegistrationSerializer
+from socialnetwork.serializers.auth.registration import RegistrationSerializer
 from socialnetwork.models import User
 from django.contrib.auth import login, authenticate
 
@@ -32,5 +33,5 @@ class RegistrationView(APIView):
             login(request, user, backend="django.contrib.auth.backends.ModelBackend")
             authenticate(username=serializer.validated_data['username'],
                          password=serializer.validated_data['password'])
-            return HttpResponseRedirect(redirect_to='/main/profile')
+            return HttpResponseRedirect(reverse('profile', kwargs={'username': user.username}))
         return Response(status=HTTP_400_BAD_REQUEST)

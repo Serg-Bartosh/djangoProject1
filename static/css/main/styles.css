@@ -1,16 +1,11 @@
-body, h1, h2, h3, p, ul, li {
-    margin: 0;
-    padding: 0;
-}
-
+/* Общие стили */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f2f5;
+    font-family: Arial, sans-serif;
     margin: 0;
 }
 
 header {
-    background-color: #3b5998;
+    background-color: #3b99fc;
     color: #fff;
     padding: 10px;
     display: flex;
@@ -23,11 +18,22 @@ header {
     align-items: center;
 }
 
+a {
+    color: #3b5998;; /* Цвет ссылок */
+    text-decoration: none; /* Удаление подчеркивания */
+}
+
+/* Стили для ссылок при наведении */
+a:hover {
+    color: #3b5998;; /* Цвет ссылок при наведении */
+    text-decoration: underline; /* Добавление подчеркивания при наведении */
+}
+
+
 .logo {
     font-size: 1.5em;
     font-weight: bold;
 }
-
 
 .search-bar input {
     padding: 8px;
@@ -45,51 +51,36 @@ header {
     cursor: pointer;
 }
 
-main {
-    background-color: #fff;
-    margin: 20px;
+.main-container {
+    background-color: #f0f2f5;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.post-form {
+h1 {
     margin-bottom: 20px;
 }
 
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.post-list ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-button {
-    background-color: #3b5998;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-
-.post {
+.post-list ul li {
     background-color: #fff;
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
+    padding: 20px;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 
-.post-author {
+.post-list ul li a {
     font-weight: bold;
-    margin-bottom: 5px;
+    color: #3b5998;
+    text-decoration: none;
 }
 
-.post-content {
-    font-size: 14px;
+.post-list ul li img {
+    max-width: 100%;
+    border-radius: 5px;
 }
 
 footer {
@@ -98,46 +89,6 @@ footer {
     background-color: #f0f0f0;
 }
 
-.user-menu {
-    display: flex;
-    align-items: center;
-}
-
-.user-menu-item {
-    margin-right: 20px;
-    color: #fff;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.user-menu-bg {
-    background-color: #3b5998;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.user-menu-items {
-    display: flex;
-    align-items: center;
-}
-
-@media screen and (max-width: 600px) {
-    .logo-search {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .search-bar {
-        margin-top: 10px;
-    }
-
-    .user-menu {
-        flex-direction: column;
-        align-items: flex-end;
-    }
-
-    .menu-item {
-        margin-top: 10px;
-    }
+.article-image {
+    width: 20%;
 }

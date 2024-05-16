@@ -12,9 +12,9 @@ class ProfilePhotoView(APIView):
     parser_classes = [MultiPartParser]
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
-    # TODO: edit profile photo
+    # TODO: edit auth photo
     @staticmethod
-    def post(request):
+    def post(request, username):
         serializer = PhotoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)

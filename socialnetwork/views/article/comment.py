@@ -5,7 +5,6 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
 from socialnetwork.models import Article
-from socialnetwork.models.comment import CommentArticle
 from socialnetwork.serializers.article.comment import CommentArticleSerializer
 
 

@@ -1,7 +1,7 @@
+from django.core.validators import validate_image_file_extension
 from django.db import models
 from django.utils.text import slugify
 
-from djangoProject1.settings import MEDIA_ROOT
 from socialnetwork.models import User
 
 
@@ -14,4 +14,6 @@ def file_location(instance, filename):
 
 class Avatar(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=file_location, null=False, blank=True)
+    image = models.ImageField(upload_to=file_location, null=False, blank=True,
+                              max_length=1048576,  # 1 Bite
+                              validators=[validate_image_file_extension])

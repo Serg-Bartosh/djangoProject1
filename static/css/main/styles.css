@@ -19,7 +19,7 @@ header {
 }
 
 a {
-    color: #3b5998;; /* Цвет ссылок */
+    color: #3b5998; /* Цвет ссылок */
     text-decoration: none; /* Удаление подчеркивания */
 }
 
@@ -91,4 +91,8 @@ footer {
 
 .article-image {
     width: 20%;
+}
+
+.item {
+    margin-bottom: 20px;
 }

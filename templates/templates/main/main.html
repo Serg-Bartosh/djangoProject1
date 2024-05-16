@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Social Network</title>
-    <!-- Подключаем статические файлы -->
     {% load static %}
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0"/>
     <link rel="stylesheet" href="{% static 'css/main/styles.css' %}">
 </head>
 <body>
@@ -13,31 +14,30 @@
     <div class="logo-search">
         <div class="logo">My Social Network</div>
         <div class="search-bar">
-            {#            TODO:Доделать поиск#}
-            <label>
-                {#                <form class="d-flex" role="search" method="GET" action="{% url 'search' username=required %}">#}
+            <form id="searchForm" class="d-flex" role="search">
                 {% csrf_token %}
                 <input
+                        id="searchInput"
                         class="form-control me-2"
                         type="search"
                         placeholder="Search"
-                        name="username"
                         required
                         aria-label="Search"
                 >
-                <button class="btn btn-outline-success" type="submit">Search</button>
-                {#                </form>#}
-
-            </label>
+                <button id="searchButton" class="material-symbols-outlined" type="button">search</button>
+            </form>
         </div>
+
+
     </div>
 
     <div class="user-menu">
         {% if user.is_authenticated %}
-            <div class="menu-item"><a href="{% url 'profile' username=user.username %}">Your Profile</a></div>
-            <div class="menu-item">Notifications</div>
-            <div class="menu-item">Messages</div>
-            <div class="menu-item"><a href="{% url 'logout' %}">Logout</a></div>
+            <a class="material-symbols-outlined" href="{% url 'donate' %}">shopping_cart</a>
+            <a class="material-symbols-outlined" href="{% url 'profile' username=user.username %}">person</a>
+            <a class="material-symbols-outlined">notification_important</a>
+            <a class="material-symbols-outlined" href="{% url 'user_chat' %}">contact_mail</a>
+            <a class="material-symbols-outlined" href="{% url 'logout' %}">logout</a>
         {% else %}
             <div class="menu-item"><a href="{% url 'registration' %}">Registration</a></div>
             <div class="menu-item"><a href="{% url 'login' %}">Login</a></div>
@@ -53,17 +53,23 @@
         {% if not articles_with_likes is None %}
             <ul>
                 {% for article_data in articles_with_likes %}
-                    <li>
-                        <a href="{% url 'article_page' author=article_data.author.id title=article_data.article.title %}">{{ article_data.article.title }}</a>
-                        <p>{{ article_data.article.content }}</p>
-                        {% if article_data.article.image %}
-                            <img class="article-image" src="{{ article_data.article.image.url }}" alt="Article Image">
-                        {% endif %}
-                        <p>Likes: {{ article_data.likes_count }}</p>
-                        <p>Dislikes: {{ article_data.dislikes_count }}</p>
-                        <p>Comments: {{ article_data.comments }}</p>
-                        <p>Created at: {{ article_data.article.created_at }}</p>
-                        <p>Updated at: {{ article_data.article.updated_at }}</p>
+                    <li class="item">
+                        <a class="gg"
+                           href="{% url 'article_page' author=article_data.author.id title=article_data.article.title %}">
+                            <div class="item-inf">
+                                <p>{{ article_data.article.title }}</p>
+                                <p>{{ article_data.article.content }}</p>
+                                {% if article_data.article.image %}
+                                    <img class="article-image" src="{{ article_data.article.image.url }}"
+                                         alt="Article Image">
+                                {% endif %}
+                                <p>Likes: {{ article_data.likes_count }}</p>
+                                <p>Dislikes: {{ article_data.dislikes_count }}</p>
+                                <p>Comments: {{ article_data.comments }}</p>
+                                <p>Created at: {{ article_data.article.created_at }}</p>
+                                <p>Updated at: {{ article_data.article.updated_at }}</p>
+                            </div>
+                        </a>
                     </li>
                 {% endfor %}
             </ul>

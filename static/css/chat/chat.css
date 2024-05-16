@@ -1,0 +1,113 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.chat-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.chat-input {
+    display: flex;
+    align-items: center;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.chat-input button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.chat-input button:hover {
+    background-color: #0056b3;
+}
+
+.message-container {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    background-color: #999999;
+    border-radius: 10px;
+}
+
+.sender {
+    font-weight: bold;
+}
+
+.message {
+    color: #333;
+    margin-top: 5px; /* добавляем небольшой отступ между sender и сообщением */
+}
+
+.own-message .sender {
+    text-align: right;
+}
+
+.own-message .message {
+    text-align: right;
+}
+
+.other-message .sender {
+    text-align: left;
+}
+
+.other-message .message {
+    text-align: left;
+}
+
+.message-container {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.message-container.own {
+    text-align: left;
+    background-color: #bfe5e6;
+}
+
+.message-container.other {
+    text-align: right;
+    background-color: #f2f2f2;
+}
+
+.author {
+    font-weight: bold;
+}
+
+.content {
+    color: #333;
+}
+
+.created-at {
+    color: #999;
+    font-size: 0.8em;
+}

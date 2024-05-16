@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Search Results</title>
+    <link rel="stylesheet" href="{% static 'css/main/search.css' %}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <a class="material-symbols-outlined" href="{% url 'main' %}">arrow_back</a>
+
+    <h1>User Search Results</h1>
+
+    <div class="search-bar">
+        <form id="searchForm" class="search-form" role="search">
+            {% csrf_token %}
+            <input
+                    id="searchInput"
+                    class="search-input"
+                    type="search"
+                    placeholder="Search"
+                    required
+                    aria-label="Search"
+            >
+            <button id="searchButton" class="search-button" type="button">Search</button>
+        </form>
+    </div>
+
+    <div class="results">
+        {% if users %}
+            <ul class="user-list">
+                {% for user in users %}
+                    <li class="user-item">
+                        <a href="{% url 'profile' username=user.username %}" class="user-link">
+                            <div class="user-details">
+                                <div class="user-photo">
+                                    <img src="{{ user.avatar_url }}" alt="User Photo">
+                                </div>
+                                <div class="user-info">
+                                    <h2 class="username">User name: {{ user.username }}</h2>
+                                    <p class="name">Name: {{ user.first_name }} {{ user.last_name }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+    </div>
+</div>
+<script src="{% static 'js/main/search.js' %}"></script>
+
+</body>
+</html>

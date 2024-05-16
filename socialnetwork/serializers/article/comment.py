@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from socialnetwork.models.comment import CommentArticle
+from socialnetwork.models.article.comment import CommentArticle
 
 
 class CommentArticleSerializer(serializers.ModelSerializer):

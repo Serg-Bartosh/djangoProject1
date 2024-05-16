@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate to Ukrainian Armed Forces</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/payment/donate.css' %}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Donate to Ukrainian Armed Forces</h1>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <section class="donate-form">
+            <h2>Make a Donation</h2>
+            <form method="post" action="{% url 'payment' %}">
+                {% csrf_token %}
+                <input type="hidden" name="variant" value="dummy">
+                <input type="hidden" name="currency" value="USD">
+                <label for="amount">Amount:</label>
+                <input type="text" id="amount" name="price" placeholder="Enter amount">
+                <button type="submit">Donate</button>
+            </form>
+        </section>
+        
+        <section class="info">
+            <h2>Why Donate?</h2>
+            <p>Your donation helps support the brave men and women of the Ukrainian Armed Forces defending their
+                country's sovereignty.</p>
+        </section>
+    </div>
+</main>
+<footer>
+    <div class="container">
+        <p>&copy; 2024 Ukrainian Armed Forces. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>
+

@@ -1,5 +1,6 @@
 import random
 
+from django.core.validators import validate_image_file_extension
 from django.db import models
 
 from socialnetwork.models import User
@@ -15,7 +16,9 @@ class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=False, blank=False)
     content = models.TextField(max_length=5000, null=False, blank=False)
-    image = models.ImageField(upload_to=file_location, null=False, blank=True)
+    image = models.ImageField(upload_to=file_location, null=False, blank=True,
+                              max_length=1048576,  # 1 Bite
+                              validators=[validate_image_file_extension])
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created_at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated_at")
 

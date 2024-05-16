@@ -35,8 +35,8 @@ body {
 }
 
 .profile-image img {
-    width: 150px;
-    height: 150px;
+    height: 200px;
+    width: 200px;
     border-radius: 50%;
     border: 5px solid #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -147,4 +147,48 @@ body {
 
 .title:hover {
     color: burlywood;
+}
+
+.card-info {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.card-info form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.card-info label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.card-info input[type="text"],
+.card-info input[type="date"] {
+    width: calc(100% - 12px);
+    padding: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.card-info button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.card-info button[type="submit"]:hover {
+    background-color: #0056b3;
 }

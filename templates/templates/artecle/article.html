@@ -5,38 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article Details</title>
-    <link rel="stylesheet" href="{% static 'css/article.css' %}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link rel="stylesheet" href="{% static 'css/article/article.css' %}">
 </head>
 <body>
 <div class="article-container">
+    <a href="{% url 'main' %}" class="material-symbols-outlined">
+        arrow_back
+    </a>
+
     <h1>{{ article.title }}</h1>
     <div class="article-meta">
         <p><strong>Author:</strong> {{ article.author }}</p>
-        <p><strong>Likes:</strong> {{ likes }}</p>
-        <p><strong>Dislikes:</strong> {{ dislikes }}</p>
+        <br>
         <div class="like-dislike-buttons">
             <form method="post" action="{% url 'article_like' author=author title=article.title %}">
                 {% csrf_token %}
-                <button type="submit" name="like" value="true">Like</button>
+                <button type="submit" name="like" value="true" class="material-symbols-outlined">thumb_up</button>
+                {{ likes }}
             </form>
             <form method="post" action="{% url 'article_like' author=author title=article.title %}">
                 {% csrf_token %}
-                <button type="submit" name="like" value="false">Dislike</button>
+                <button type="submit" name="like" value="false" class="material-symbols-outlined">
+                    thumb_down
+                </button>
+                {{ dislikes }}
             </form>
         </div>
+        <br>
+        <p class="material-symbols-outlined">
+            rate_review</p>
         {% if comments %}
             <div class="comments-section">
-            <h3>Comments:</h3>
             {% for comment in comments %}
-            <div class="comment">
-                <a href="{% url 'profile' username=comment.author.username %}"><strong>{{ comment.author.username }}</strong> - {{ comment.created_at }}</a>
-                <p>{{ comment.comment }}</p>
-            </div>
+                <div class="comment">
+                    <a href="{% url 'profile' username=comment.author.username %}"><strong>{{ comment.author.username }}</strong>
+                        - {{ comment.created_at }}</a>
+                    <p>{{ comment.comment }}</p>
+                </div>
             {% endfor %}
         {% else %}
             <p><strong>No comments yet</strong></p>
         {% endif %}
-        <p><strong>Comments Count:</strong> {{ comments_count }}</p>
         <p><strong>Created At:</strong> {{ article.created_at }}</p>
         <p><strong>Updated At:</strong> {{ article.updated_at }}</p>
         </div>

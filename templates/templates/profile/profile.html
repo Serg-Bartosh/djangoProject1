@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/account/profile.css' %}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <title>User Profile</title>
 </head>
 <body>
 
-<a href="{% url 'main' %}">Main</a>
+<a class="material-symbols-outlined" href="{% url 'main' %}">arrow_back</a>
 
 <div id="mainContainer">
     <div id="profileContainer">
@@ -17,14 +19,16 @@
             <div class="profile-image">
                 <img src="{% if avatar.image %}{{ avatar.image.url }}{% endif %}" alt="Profile Image">
                 {% if request.user == user %}
-                    <form action="" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'avatar' username=user.username %}" method="post"
+                          enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.image }}
                         <input type="file" name="image">
-                        <button type="submit">Upload Avatar</button>
+                        <button class="material-symbols-outlined" type="submit"> upload_file</button>
                     </form>
                 {% endif %}
             </div>
+
 
             <div class="profile-data">
                 <p><strong>Username:</strong> {{ user.username }}</p>
@@ -32,6 +36,23 @@
                 <p><strong>Last Name:</strong> {{ user.last_name }}</p>
                 <p><strong>Email:</strong> {{ user.email }}</p>
                 <p><strong>Bio:</strong> {{ user_profile.bio }}</p>
+                {% if request.user != user %}
+                    <a class="material-symbols-outlined" href="{% url 'chat' user_id=user.id %}">send</a>
+                {% endif %}
+            </div>
+            <div class="card-info">
+                <form action="{% url 'profile' username=user.username %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="card_number">Card Number:</label>
+                    <input type="text" id="card_number" name="card_number" value="{{ user.card_number }}">
+                    <label for="card_expiry_date">Card Expiry Date:</label>
+                    <input type="date" id="card_expiry_date" name="card_expiry_date"
+                           value="{{ user.card_expiry_date }}">
+                    <label for="card_holder_name">Card Holder Name:</label>
+                    <input type="text" id="card_holder_name" name="card_holder_name"
+                           value="{{ user.card_holder_name }}">
+                    <button type="submit">Update Card Info</button>
+                </form>
             </div>
         </div>
 
@@ -39,7 +60,8 @@
         <ul id="postsList">
             {% for article_info in articles_info %}
                 <li>
-                    <a class="title" href="{% url 'article_page' author=article_info.author title=article_info.title %}">{{ article_info.title }}</a>
+                    <a class="title"
+                       href="{% url 'article_page' author=article_info.author title=article_info.title %}">{{ article_info.title }}</a>
                     <p>{{ article_info.content }}</p>
                     {% if article_info.image %}
                         <img class="post-image" src="{{ article_info.image }}" alt="Post Image">
@@ -62,7 +84,7 @@
     </div>
     <div class="media-container">
         <h2>Uploaded Media</h2>
-        <form action="{% url 'photo' %}" method="post" enctype="multipart/form-data">
+        <form action="{% url 'photo' username=user.username %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% if photos %}
                 {% for photo in photos %}
@@ -73,7 +95,7 @@
             {% endif %}
             {% if request.user == user %}
                 <input type="file" name="image">
-                <button type="submit">Upload Media</button>
+                <button class="material-symbols-outlined" type="submit">upload_file</button>
             {% endif %}
         </form>
     </div>
@@ -162,6 +184,7 @@
                 // Обрабатываем ошибку, если необходимо
             });
     });
+
 </script>
 </body>
 </html>

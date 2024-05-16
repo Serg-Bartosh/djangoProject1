@@ -1,8 +1,9 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 
 from socialnetwork.models import Article, CommentArticle, ArticleLike
@@ -17,7 +18,7 @@ class ArticlePageView(APIView):
         try:
             article = Article.objects.get(author=author, title=title)
         except Article.DoesNotExist:
-            return Response(status=HTTP_400_BAD_REQUEST)
+            return HttpResponseRedirect(reverse('main'))
 
         try:
             comments = CommentArticle.objects.filter(article=article)
@@ -40,4 +41,4 @@ class ArticlePageView(APIView):
                    'dislikes': dislikes_count}
 
         return render(request, 'templates/artecle/article.html',
-                      context=context)
+                      context=context, status=HTTP_200_OK)

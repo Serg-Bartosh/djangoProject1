@@ -2,21 +2,20 @@ from django.shortcuts import render
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
 from socialnetwork.models import Avatar, Article, User, ArticleLike
 from socialnetwork.permissions.is_owner import IsOwnerOrReadOnly
-from socialnetwork.serializers.profile.avatar import AvatarSerializer
 from socialnetwork.models import CommentArticle, Photo
+from socialnetwork.serializers.profile.card import CardSerializer
 
 
 class ProfileView(APIView):
     parser_classes = [MultiPartParser]
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
-    @staticmethod
-    def get(request, username):
+    def get(self, request, username):
         user = User.objects.get(username=username)
         try:
             avatar = Avatar.objects.get(user_id=user)
@@ -44,21 +43,14 @@ class ProfileView(APIView):
         context = {'user': user, 'avatar': avatar, 'photos': photo, 'articles_info': articles_info}
         return render(request, 'templates/profile/profile.html', context=context)
 
-    @staticmethod
-    def update_avatar(avatar, image_data):
-        avatar.image.delete()
-        avatar.image = image_data
-        avatar.save()
-
-    # TODO: edit profile
-    @staticmethod
-    def post(request, username):
-        user = User.objects.get(username=username)
-        serializer = AvatarSerializer(data=request.data)
+    # TODO: edit auth
+    def post(self, request, username):
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response(status=HTTP_400_BAD_REQUEST)
+        serializer = CardSerializer(user, data=request.data)
         if serializer.is_valid():
-            try:
-                existing_avatar = Avatar.objects.get(user=user)
-            except Avatar.DoesNotExist:
-                serializer.save(user=user)
-                return Response(status=HTTP_200_OK)
+            serializer.save()
+            return Response(status=HTTP_200_OK)
         return Response(status=HTTP_400_BAD_REQUEST)

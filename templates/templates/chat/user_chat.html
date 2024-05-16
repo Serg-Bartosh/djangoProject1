@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Chat List</title>
+    <link rel="stylesheet" href="{% static 'css/chat/user_chat.css' %}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <a class="material-symbols-outlined" href="{% url 'main' %}">arrow_back</a>
+
+    <h1>User Chat List</h1>
+
+    <div class="results">
+        {% if recipients %}
+            <ul class="chat-list">
+                {% for recipient in recipients %}
+                    <li class="chat-item">
+                        <a href="{% url 'chat' user_id=recipient.id %}" class="chat-link">
+                            <div class="chat-details">
+                                {% if recipient.image %}
+                                    <div class="user-photo">
+                                        <img src="{{ recipient.image.url }}" alt="User Photo">
+                                    </div>
+                                {% endif %}
+                                <div class="user-info">
+                                    <h2 class="chat-room-name">User: {{ recipient.username }}</h2>
+                                    <span class="new-messages">New Messages: {{ recipient.new_messages }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+    <link rel="stylesheet" href="{% static 'css/chat/chat.css' %}">
+</head>
+<body>
+<div class="chat-container">
+    <a class="material-symbols-outlined" href="{% url 'main' %}">arrow_back</a>
+    <div class="chat-messages" id="chat-messages">
+        {% for message in messages %}
+            {% for message in messages %}
+                <div class="message-container {% if message.author == request.user.username %}own{% else %}other{% endif %}">
+                    <div class="author">{{ message.author }}</div>
+                    <div class="content">{{ message.content }}</div>
+                    <div class="created-at">{{ message.created_at|date:"DATETIME_FORMAT" }}</div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+
+    <div class="chat-input">
+        <label for="message-input"></label><input type="text" id="message-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+</div>
+
+<script>
+    const user_id = '{{ user_id }}';
+
+    const chatSocket = new WebSocket(
+        'ws://' +
+        window.location.host +
+        '/main/ws/chat/' +
+        user_id +
+        '/'
+    );
+    chatSocket.onopen = function (event) {
+        console.log('WebSocket connection established.');
+    };
+
+    chatSocket.onmessage = function (event) {
+        try {
+            const message = JSON.parse(event.data);
+            console.log('Received message:', message);
+
+            const messageId = message.id;
+            const displayedMessages = JSON.parse(localStorage.getItem('displayedMessages')) || [];
+
+            if (!displayedMessages.includes(messageId) && !displayedMessages.includes(message.timestamp)) {
+                displayMessage(message);
+                displayedMessages.push(messageId);
+                displayedMessages.push(message.timestamp);
+                localStorage.setItem('displayedMessages', JSON.stringify(displayedMessages));
+            } else {
+                console.log('Message already displayed:', message);
+            }
+        } catch (error) {
+            console.error('Error parsing incoming message:', error);
+        }
+    };
+
+
+    chatSocket.onerror = function (error) {
+        console.error('WebSocket error:', error);
+    };
+
+    chatSocket.onclose = function (event) {
+        if (event.wasClean) {
+            console.log('WebSocket connection closed cleanly');
+        } else {
+            console.error('WebSocket connection closed unexpectedly');
+        }
+        console.log('WebSocket close code:', event.code);
+        console.log('WebSocket close reason:', event.reason);
+    };
+
+    function sendMessage(message) {
+        if (chatSocket.readyState === WebSocket.OPEN) {
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+
+            localStorage.removeItem('displayedMessages');
+        } else {
+            console.error('WebSocket connection is closed.');
+        }
+    }
+
+    function displayMessage(message) {
+        const chatMessages = document.getElementById('chat-messages');
+
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('message-container'); // Добавляем основной класс
+
+        const senderElement = document.createElement('div');
+        senderElement.innerText = message.author;
+        senderElement.classList.add('author');
+
+        const messageElement = document.createElement('div');
+        messageElement.innerText = message.content;
+        messageElement.classList.add('content');
+
+        if (message.author === '{{ request.user.username }}') {
+            messageContainer.classList.add('own'); 
+        } else {
+            messageContainer.classList.add('other');
+        }
+
+        messageContainer.appendChild(senderElement);
+        messageContainer.appendChild(messageElement);
+
+        chatMessages.appendChild(messageContainer);
+    }
+
+
+    document.getElementById('send-button').addEventListener('click', function () {
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value;
+        sendMessage(message);
+        messageInput.value = '';
+    });
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
 from socialnetwork.permissions.is_owner import IsOwnerOrReadOnly
-from socialnetwork.serializers.article.article import ArticleSerializer
+from socialnetwork.serializers.profile.article import ArticleSerializer
 
 
 class ArticleView(APIView):

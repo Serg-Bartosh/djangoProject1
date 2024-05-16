@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from socialnetwork.models.article import Article
+from socialnetwork.models.article.article import Article
 
 
 class ArticleSerializer(serializers.ModelSerializer):

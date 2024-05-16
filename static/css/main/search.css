@@ -1,0 +1,115 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #45a049;
+}
+
+.results {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.user-list {
+    list-style: none;
+    padding: 0;
+}
+
+.user-item {
+    margin-bottom: 20px;
+}
+
+.user-link {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+    display: flex;
+}
+
+.user-link:hover {
+    color: #4caf50;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.user-photo {
+    margin-right: 20px;
+}
+
+.user-photo img {
+    width: 100px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.user-info {
+    text-align: left;
+}
+
+.username {
+    margin-bottom: 5px;
+}
+
+.name {
+    color: #666;
+}
+
+.error-message {
+    color: #ff0000;
+    text-align: center;
+    margin-top: 20px;
+}

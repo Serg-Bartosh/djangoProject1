@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
-from socialnetwork.models import Article, User
-from socialnetwork.models.like import ArticleLike
+from socialnetwork.models import Article
+from socialnetwork.models.article.like import ArticleLike
 from socialnetwork.serializers.article.like import LikeArticleSerializer
+from socialnetwork.validator.article.like_validator import validate_like
 
 
 class LikeArticleView(APIView):
@@ -19,10 +20,10 @@ class LikeArticleView(APIView):
             article = Article.objects.get(author=author, title=title)
         except Article.DoesNotExist:
             return Response(status=HTTP_400_BAD_REQUEST)
-
         serializer = LikeArticleSerializer(data=request.POST)
         if serializer.is_valid():
             like_value = serializer.validated_data['like']
+            print(like_value)
             try:
                 user_like = ArticleLike.objects.get(user=request.user, article=article)
 
